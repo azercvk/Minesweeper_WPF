@@ -118,7 +118,7 @@ namespace Minesweeper
             }
         }
 
-        public void btnEasyModeCLicked(object sender, RoutedEventArgs e)
+        public void btnEasyModeClicked(object sender, RoutedEventArgs e)
         {
             this.drawCells(new Size(15, 26));   
         }

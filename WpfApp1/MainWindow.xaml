@@ -9,7 +9,7 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="_Easy Mode" Click="btnEasyModeCLicked"></MenuItem>
+                <MenuItem Header="_Easy Mode" Click="btnEasyModeClicked"></MenuItem>
             </MenuItem>
         </Menu>
         <Grid Name="gameboard">
