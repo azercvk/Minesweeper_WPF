@@ -69,16 +69,19 @@ namespace WpfApp1
                 gameboard.RowDefinitions.Add(new RowDefinition());
                 gameboard.ColumnDefinitions.Add(new ColumnDefinition());
 
-                for(int y = 0; y < i; y++)
+                if (i > 0)
                 {
-                    // Add item (i, y)
-                    this.addButton(i, y);
+                    for (int d = 0; d < i; d++)
+                    {
+                        // Add item at the end of every row
+                        this.addButton(i, d);
 
-                    // Add item (y, i)
-                    this.addButton(y, i);
+                        // Add item at the bottom of every collumn
+                        this.addButton(d, i);
+                    }
                 }
 
-                // Add item (i, i)
+                // Add item at the lower right corner
                 this.addButton(i, i);
 
                
