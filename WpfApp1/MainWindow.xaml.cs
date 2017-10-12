@@ -13,15 +13,13 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WpfApp1
+namespace Minesweeper
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-
-        private static int easyMode = 100;
 
         public MainWindow()
         {
@@ -31,21 +29,30 @@ namespace WpfApp1
         private void clearGamebaord()
         {
             // Delete all rows
-            for (int i = 0; i < gameboard.RowDefinitions.Count; i++)
+            if(gameboard.RowDefinitions.Count > 0)
             {
-                RowDefinition row = gameboard.RowDefinitions[i];
-                gameboard.RowDefinitions.Remove(row);
-            };
+                RowDefinition[] rows = gameboard.RowDefinitions.ToArray();
+                foreach(RowDefinition row in rows)
+                {
+                    gameboard.RowDefinitions.Remove(row);
+                }
+            }
+
             // Delete all Columns
-            for (int i = 0; i < gameboard.ColumnDefinitions.Count; i++)
+            if (gameboard.ColumnDefinitions.Count > 0)
             {
-                ColumnDefinition col = gameboard.ColumnDefinitions[i];
-                gameboard.ColumnDefinitions.Remove(col);
+                ColumnDefinition[] cols = gameboard.ColumnDefinitions.ToArray();
+                foreach(ColumnDefinition col in cols)
+                {
+                    gameboard.ColumnDefinitions.Remove(col);
+                }
             }
         }
 
         private void addButton(int x, int y)
         {
+            Console.WriteLine("Adding button ({0}, {1})", x, y);
+
             Button btn = new Button();
             btn.Content = " ";
             Grid.SetColumn(btn, x);
@@ -53,46 +60,67 @@ namespace WpfApp1
             gameboard.Children.Add(btn);
         }
 
-        private void setCells(int cells)
+        private void drawCells(Size size)
         {
-            Button btn; // place holder for all the buttons
-            int len = (int) Math.Floor(Math.Sqrt(cells));
-
-            Console.WriteLine("Len " + len);
-
             // Clear the board
             this.clearGamebaord();
 
-            // add the same rows and columns as defined by len
-            for(int i = 0; i < len; i++)
+            // Create the SQUARE rows and columns
+            int square = (int) Math.Floor(size.Width < size.Height ? size.Width : size.Height);
+            for(int i = 0; i < square; i++)
             {
-                gameboard.RowDefinitions.Add(new RowDefinition());
                 gameboard.ColumnDefinitions.Add(new ColumnDefinition());
+                gameboard.RowDefinitions.Add(new RowDefinition());
 
-                if (i > 0)
+                if(i > 0)
                 {
                     for (int d = 0; d < i; d++)
                     {
-                        // Add item at the end of every row
+                        // add cells at the bottom of each column
                         this.addButton(i, d);
 
-                        // Add item at the bottom of every collumn
+                        // add cells at the end of each row
                         this.addButton(d, i);
                     }
                 }
 
-                // Add item at the lower right corner
                 this.addButton(i, i);
-
-               
-                Console.WriteLine("Len %d complete", len);
             }
 
+            // Draw any additional rows or columns
+            if(size.Width > size.Height)
+            {
+                int len = (int) Math.Floor(size.Width - size.Height);
+                for(int i = 0; i < len; i++)
+                {
+                    gameboard.ColumnDefinitions.Add(new ColumnDefinition());
+                    int rows = gameboard.ColumnDefinitions.Count;
+                    for(int d = 0; d <= rows; d++)
+                    {
+                        // add cells at the bottom of each column
+                        this.addButton(square + i, d);
+                    }
+                }
+            }
+            else if(size.Height > size.Width)
+            {
+                int len = (int) Math.Floor(size.Height - size.Width);
+                for(int i = 0; i < len; i++)
+                {
+                    gameboard.RowDefinitions.Add(new RowDefinition());
+                    int cols = gameboard.ColumnDefinitions.Count;
+                    for(int d = 0; d <= cols; d++)
+                    {
+                        // add cells at the end of each row
+                        this.addButton(d, square + i);
+                    }
+                }
+            }
         }
 
         public void btnEasyModeCLicked(object sender, RoutedEventArgs e)
         {
-            this.setCells(easyMode);   
+            this.drawCells(new Size(15, 26));   
         }
     }
 }
