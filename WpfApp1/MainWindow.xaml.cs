@@ -26,29 +26,6 @@ namespace Minesweeper
             InitializeComponent();
         }
 
-        private void clearGamebaord()
-        {
-            // Delete all rows
-            if(gameboard.RowDefinitions.Count > 0)
-            {
-                RowDefinition[] rows = gameboard.RowDefinitions.ToArray();
-                foreach(RowDefinition row in rows)
-                {
-                    gameboard.RowDefinitions.Remove(row);
-                }
-            }
-
-            // Delete all Columns
-            if (gameboard.ColumnDefinitions.Count > 0)
-            {
-                ColumnDefinition[] cols = gameboard.ColumnDefinitions.ToArray();
-                foreach(ColumnDefinition col in cols)
-                {
-                    gameboard.ColumnDefinitions.Remove(col);
-                }
-            }
-        }
-
         private void addButton(int x, int y)
         {
             Console.WriteLine("Adding button ({0}, {1})", x, y);
@@ -60,67 +37,46 @@ namespace Minesweeper
             gameboard.Children.Add(btn);
         }
 
+        private void addRows(int rows)
+        {
+            for(int i = 0; i < rows; i++)
+            {
+                gameboard.RowDefinitions.Add(new RowDefinition());
+            }
+        }
+
+        private void addCols(int cols)
+        {
+            for (int i = 0; i < cols; i++)
+            {
+                gameboard.ColumnDefinitions.Add(new ColumnDefinition());
+            }
+        }
+
         private void drawCells(Size size)
         {
             // Clear the board
-            this.clearGamebaord();
+            gameboard.RowDefinitions.Clear();
+            gameboard.ColumnDefinitions.Clear();
 
-            // Create the SQUARE rows and columns
-            int square = (int) Math.Floor(size.Width < size.Height ? size.Width : size.Height);
-            for(int i = 0; i < square; i++)
+            int rows = (int)Math.Floor(size.Height);
+            int cols = (int)Math.Floor(size.Width);
+
+            this.addCols(cols);
+            this.addRows(rows);
+
+            for(int x = 0; x < size.Width; x++)
             {
-                gameboard.ColumnDefinitions.Add(new ColumnDefinition());
-                gameboard.RowDefinitions.Add(new RowDefinition());
-
-                if(i > 0)
+                for(int y = 0; y < size.Height; y++)
                 {
-                    for (int d = 0; d < i; d++)
-                    {
-                        // add cells at the bottom of each column
-                        this.addButton(i, d);
-
-                        // add cells at the end of each row
-                        this.addButton(d, i);
-                    }
-                }
-
-                this.addButton(i, i);
-            }
-
-            // Draw any additional rows or columns
-            if(size.Width > size.Height)
-            {
-                int len = (int) Math.Floor(size.Width - size.Height);
-                for(int i = 0; i < len; i++)
-                {
-                    gameboard.ColumnDefinitions.Add(new ColumnDefinition());
-                    int rows = gameboard.ColumnDefinitions.Count;
-                    for(int d = 0; d <= rows; d++)
-                    {
-                        // add cells at the bottom of each column
-                        this.addButton(square + i, d);
-                    }
-                }
-            }
-            else if(size.Height > size.Width)
-            {
-                int len = (int) Math.Floor(size.Height - size.Width);
-                for(int i = 0; i < len; i++)
-                {
-                    gameboard.RowDefinitions.Add(new RowDefinition());
-                    int cols = gameboard.ColumnDefinitions.Count;
-                    for(int d = 0; d <= cols; d++)
-                    {
-                        // add cells at the end of each row
-                        this.addButton(d, square + i);
-                    }
+                    this.addButton(x, y);
                 }
             }
         }
 
         public void btnEasyModeClicked(object sender, RoutedEventArgs e)
         {
-            this.drawCells(new Size(15, 26));   
+            this.drawCells(new Size(12, 23));   
         }
     }
 }
