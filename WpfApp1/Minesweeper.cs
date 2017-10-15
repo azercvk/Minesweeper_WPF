@@ -15,7 +15,7 @@ namespace Minesweeper
 
         public static Minesweeper getInstance()
         {
-            if(self == null)
+            if (self == null)
             {
                 self = new Minesweeper();
             }
@@ -48,7 +48,7 @@ namespace Minesweeper
 
         private bool placeBomb(int x, int y)
         {
-            if(cells[x, y] < 0)
+            if (cells[x, y] < 0)
             {
                 // There is already a bomb here so a bomb cannot be placed
                 return false;
