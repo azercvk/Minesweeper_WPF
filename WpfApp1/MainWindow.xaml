@@ -13,6 +13,10 @@
             </MenuItem>
         </Menu>
         <Grid Name="gameboard">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="9*"/>
+                <ColumnDefinition Width="383*"/>
+            </Grid.ColumnDefinitions>
         </Grid>
     </DockPanel>
 </Window>

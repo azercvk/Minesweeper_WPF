@@ -26,17 +26,6 @@ namespace Minesweeper
             InitializeComponent();
         }
 
-        private void addButton(int x, int y)
-        {
-            Console.WriteLine("Adding button ({0}, {1})", x, y);
-
-            Button btn = new Button();
-            btn.Content = " ";
-            Grid.SetColumn(btn, x);
-            Grid.SetRow(btn, y);
-            gameboard.Children.Add(btn);
-        }
-
         private void addRows(int rows)
         {
             for(int i = 0; i < rows; i++)
@@ -47,7 +36,7 @@ namespace Minesweeper
 
         private void addCols(int cols)
         {
-            for (int i = 0; i < cols; i++)
+            for(int i = 0; i < cols; i++)
             {
                 gameboard.ColumnDefinitions.Add(new ColumnDefinition());
             }
@@ -69,7 +58,8 @@ namespace Minesweeper
             {
                 for(int y = 0; y < size.Height; y++)
                 {
-                    this.addButton(x, y);
+                    Cell cell = new Cell(x, y);
+                    gameboard.Children.Add(cell);
                 }
             }
         }
