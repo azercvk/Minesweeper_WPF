@@ -20,6 +20,9 @@ namespace Minesweeper
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Size easySize = new Size(10, 10);
+        private int easyBombs = 10;
+        
 
         public MainWindow()
         {
@@ -66,7 +69,10 @@ namespace Minesweeper
 
         public void btnEasyModeClicked(object sender, RoutedEventArgs e)
         {
-            this.drawCells(new Size(12, 23));   
+            this.drawCells(easySize);
+            Minesweeper.getInstance().initGame(easySize, easyBombs);
+
+            Console.WriteLine(Minesweeper.getInstance());
         }
     }
 }
